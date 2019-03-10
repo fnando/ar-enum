@@ -164,6 +164,40 @@ class EnumTest < Minitest::Test
     assert_equal %w[id], Article.columns.map(&:name)
   end
 
+  test "revert create enum" do
+    migration = with_migration do
+      def change
+        create_enum :article_status, %w[draft published]
+      end
+    end
+
+    migration.migrate(:up)
+    assert_equal %w[draft published], enum_labels(:article_status)
+
+    migration.migrate(:down)
+    assert_equal [], enum_labels(:article_status)
+  end
+
+  test "revert rename enum label" do
+    with_migration do
+      def up
+        create_enum :article_status, %w[draft published]
+      end
+    end.up
+
+    migration = with_migration do
+      def change
+        rename_enum_label :article_status, "published", "live"
+      end
+    end
+
+    migration.migrate(:up)
+    assert_equal %w[draft live], enum_labels(:article_status)
+
+    migration.migrate(:down)
+    assert_equal %w[draft published], enum_labels(:article_status)
+  end
+
   test "dumps schema" do
     with_migration do
       def up
