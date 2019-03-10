@@ -26,6 +26,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Creating enums
+
 To create a `enum` type, use the method `create_enum`.
 
 ```ruby
@@ -37,6 +39,8 @@ create_table :articles do |t|
   t.column :status, :article_status, null: false, default: "draft"
 end
 ```
+
+### Dropping enums
 
 To remove the enum, use `drop_enum`.
 
@@ -57,6 +61,8 @@ change_column :articles, :status, :text
 drop_enum :article_status
 ```
 
+### Adding new labels
+
 Use `add_enum_label` to add new values to the enum type. You can control where the value will be inserted by using `before: label` and `after: label`.
 
 ```ruby
@@ -72,16 +78,34 @@ add_enum_value :article_status, "unlisted", after: "draft"
 add_enum_value :article_status, "unlisted", before: "published"
 ```
 
+**WARNING:** PostgreSQL does not have a way of removing values from enum types.
+
+### Renaming existing labels
+
 Use `rename_enum_label` to rename a value.
 
 ```ruby
 create_enum :article_status, %w[draft unlisted published]
 
-# labels will be [draft, hidden, unlisted]
-rename_enum_label :article_status, "unlisted", "hidden"
+# labels will be [draft, unlisted, live]
+rename_enum_label :article_status, "published", "live"
 ```
 
-**WARNING:** PostgreSQL does not have a way of removing values from enum types.
+### Reversing changes
+
+The following commands can be reversed:
+
+- `create_enum`
+- `rename_enum_label`
+
+
+```ruby
+class CreateColorEnumClass < ActiveRecord::Migration
+  def change
+    create_enum :color, %w[red blue black]
+  end
+end
+```
 
 ## Development
 
