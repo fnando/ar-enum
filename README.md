@@ -40,6 +40,18 @@ create_table :articles do |t|
 end
 ```
 
+You can even use the type shortcut if you want; i.e. you can use `t.article_status` instead of `t.column`.
+
+```ruby
+# The type is created independently from the table.
+create_enum :article_status, %w[draft published]
+
+create_table :articles do |t|
+  # Use the type `article_status` when defining your column.
+  t.article_status :status, null: false, default: "draft"
+end
+```
+
 ### Dropping enums
 
 To remove the enum, use `drop_enum`.
