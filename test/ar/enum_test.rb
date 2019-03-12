@@ -203,6 +203,11 @@ class EnumTest < Minitest::Test
       def up
         create_enum :article_status, %w[draft published]
         create_enum :color, %w[blue green yellow]
+
+        create_table :articles do |t|
+          t.column :status, :article_status
+          t.column :background, :color
+        end
       end
     end.up
 
@@ -218,5 +223,7 @@ class EnumTest < Minitest::Test
 
     assert_includes contents, %{create_enum :article_status, ["draft", "unlisted", "published"]}
     assert_includes contents, %{create_enum :color, ["blue", "green", "yellow"]}
+    assert_includes contents, %[create_table "articles"]
+    refute_includes contents, %[Could not dump table "articles"]
   end
 end

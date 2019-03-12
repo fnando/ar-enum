@@ -18,3 +18,4 @@ end
 ActiveRecord::Migration::CommandRecorder.include AR::Enum::CommandRecorder
 ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.include AR::Enum::Adapter
 ActiveRecord::SchemaDumper.prepend AR::Enum::SchemaDumper
+ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:enum] = {name: "character varying"}

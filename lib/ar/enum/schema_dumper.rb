@@ -15,11 +15,11 @@ module AR
 
         list.each do |row|
           labels = row["labels"].split(",")
-          name = row["name"]
+          name = row["name"].to_sym
 
           statement = [
             "  create_enum",
-            "#{name.to_sym.inspect},",
+            "#{name.inspect},",
             labels.inspect
           ].join(" ")
 
