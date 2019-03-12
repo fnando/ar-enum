@@ -224,6 +224,44 @@ class EnumTest < Minitest::Test
     assert_includes contents, %{create_enum :article_status, ["draft", "unlisted", "published"]}
     assert_includes contents, %{create_enum :color, ["blue", "green", "yellow"]}
     assert_includes contents, %[create_table "articles"]
+    assert_includes contents, %[t.article_status "status"]
+    assert_includes contents, %[t.color "background"]
     refute_includes contents, %[Could not dump table "articles"]
+  end
+
+  test "loads dumped schema" do
+    migrations = []
+
+    migrations << with_migration do
+      def change
+        create_enum :article_status, %w[draft published]
+        create_enum :color, %w[blue green yellow]
+
+        create_table :articles do |t|
+          t.column :status, :article_status
+          t.column :background, :color
+        end
+      end
+    end
+
+    assert_equal 0, ActiveRecord::Base.connection.enum_types.to_a.size
+
+    migrations.each {|migration| migration.migrate(:up) }
+
+    assert_equal 2, ActiveRecord::Base.connection.enum_types.to_a.size
+
+    stream = StringIO.new
+    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+    contents = stream.tap(&:rewind).read
+
+    migrations.each {|migration| migration.migrate(:down) }
+
+    assert_equal 0, ActiveRecord::Base.connection.enum_types.to_a.size
+
+    eval(contents)
+
+    assert_equal 2, ActiveRecord::Base.connection.enum_types.to_a.size
+
+    assert_equal %i[article_status color integer], Article.columns.map(&:type).sort
   end
 end
