@@ -35,6 +35,22 @@ class EnumTest < Minitest::Test
     assert_equal "draft", article.reload.status
   end
 
+  test "adds if it doesn't exist" do
+    with_migration do
+      def up
+        create_enum :article_status, %w[draft published]
+      end
+    end.up
+
+    with_migration do
+      def up
+        create_enum :article_status, %w[whatever]
+      end
+    end.up
+
+    assert_equal %w[draft published], enum_labels(:article_status)
+  end
+
   test "adds enum using shortcut" do
     with_migration do
       def up

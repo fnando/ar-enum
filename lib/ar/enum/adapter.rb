@@ -30,6 +30,8 @@ module AR
       end
 
       def create_enum(name, values)
+        return if enum_exists?(name)
+
         values = values.map do |value|
           quote(value.to_s)
         end
@@ -40,6 +42,10 @@ module AR
         SQL
 
         execute(sql)
+      end
+
+      def enum_exists?(name)
+        enum_types.any? {|type| type["name"] == name.to_s }
       end
 
       def add_enum_label(name, value, options = {})
