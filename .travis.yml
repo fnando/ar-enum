@@ -1,31 +1,33 @@
+---
 language: ruby
+dist: xenial
 addons:
-  postgresql: "10"
+  postgresql: "11"
   apt:
     packages:
-    - postgresql-10
-    - postgresql-client-10
+    - postgresql-11
+    - postgresql-client-11
 cache: bundler
 before_install:
-- sudo service postgresql stop
-- sed -e 's/^port.*/port = 5432/' /etc/postgresql/10/main/postgresql.conf > postgresql.conf
-- sudo chown postgres postgresql.conf
-- sudo mv postgresql.conf /etc/postgresql/10/main
-- sudo service postgresql start 10
+  - gem install bundler
+  - sudo service postgresql stop
+  - sed -e 's/^port.*/port = 5432/' /etc/postgresql/11/main/postgresql.conf > postgresql.conf
+  - sudo chown postgres postgresql.conf
+  - sudo mv postgresql.conf /etc/postgresql/11/main
+  - sudo service postgresql start 11
 before_script:
-- createdb test
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-- chmod +x ./cc-test-reporter
-- "./cc-test-reporter before-build"
+  - createdb test
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - "./cc-test-reporter before-build"
 after_script:
-- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 gemfile:
-- Gemfile
-- gemfiles/activerecord_6_0.gemfile
-- gemfiles/activerecord_5_2.gemfile
+  - gemfiles/activerecord_6_0.gemfile
+  - gemfiles/activerecord_5_2.gemfile
 rvm:
-- 2.6.1
-- 2.5.3
+  - 2.6.5
+  - 2.5.7
 notifications:
   email: false
 env:

@@ -19,13 +19,17 @@ end
 
 ActiveSupport.on_load(:active_record) do
   require "active_record/connection_adapters/postgresql_adapter"
+  silence_warnings do
+    ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES = ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES.dup
+  end
 
   ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.include(
     Module.new do
       def create_table_definition(*args)
         ActiveRecord::Base.connection.enum_types.each do |enum|
-          ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[enum["name"].to_sym] = {name: enum["name"]}
           ActiveRecord::ConnectionAdapters::PostgreSQL::ColumnMethods.class_eval do
+            ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[enum["name"].to_sym] = {name: enum["name"]}
+
             define_method(enum["name"]) do |*names, **options|
               names.each {|name| column(name, enum["name"].to_sym, options) }
             end
@@ -53,7 +57,7 @@ ActiveSupport.on_load(:active_record) do
         )
         type_metadata = ActiveRecord::ConnectionAdapters::PostgreSQLTypeMetadata.new(type_metadata)
 
-        ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[type_metadata.type] = {name: "character varying"}
+        ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[type_metadata.type] = {name: "character varying"}
       end
 
       type_metadata
