@@ -78,7 +78,10 @@ class EnumTest < Minitest::Test
       end
     end.up
 
-    assert_raises(ActiveRecord::StatementInvalid, /invalid input value for enum article_status: "unlisted"/) do
+    assert_raises(
+      ActiveRecord::StatementInvalid,
+      /invalid input value for enum article_status: "unlisted"/
+    ) do
       Article.create(status: "unlisted")
     end
   end
@@ -148,7 +151,9 @@ class EnumTest < Minitest::Test
       end
     end.up
 
-    assert ActiveRecord::Base.connection.execute("select * from pg_type where typname = 'article_status'").to_a.empty?
+    assert ActiveRecord::Base.connection.execute(
+      "select * from pg_type where typname = 'article_status'"
+    ).to_a.empty?
   end
 
   test "raise exception when dropping enum in use" do
@@ -164,7 +169,10 @@ class EnumTest < Minitest::Test
 
     Article.create!(status: "draft")
 
-    assert_raises(ActiveRecord::StatementInvalid, /cannot drop type article_status because other objects depend on it/) do
+    assert_raises(
+      ActiveRecord::StatementInvalid,
+      /cannot drop type article_status because other objects depend on it/
+    ) do
       with_migration do
         def up
           drop_enum :article_status
@@ -253,7 +261,10 @@ class EnumTest < Minitest::Test
     ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
     contents = stream.tap(&:rewind).read
 
-    assert_includes contents, %{create_enum :article_status, ["draft", "unlisted", "published"]}
+    assert_includes(
+      contents,
+      %{create_enum :article_status, ["draft", "unlisted", "published"]}
+    )
     assert_includes contents, %{create_enum :color, ["blue", "green", "yellow"]}
     assert_includes contents, %[create_table "articles"]
     assert_includes contents, %[t.article_status "status"]
@@ -290,10 +301,11 @@ class EnumTest < Minitest::Test
 
     assert_equal 0, ActiveRecord::Base.connection.enum_types.to_a.size
 
-    eval(contents)
+    eval(contents) # rubocop:disable Security/Eval
 
     assert_equal 2, ActiveRecord::Base.connection.enum_types.to_a.size
 
-    assert_equal %i[article_status color integer], Article.columns.map(&:type).sort
+    assert_equal %i[article_status color integer],
+                 Article.columns.map(&:type).sort
   end
 end

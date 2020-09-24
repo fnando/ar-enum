@@ -4,3 +4,20 @@ inherit_gem:
 
 AllCops:
   TargetRubyVersion: 2.6
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - lib/ar-enum.rb
+
+Metrics/ClassLength:
+  Enabled: false
+
+Layout/LineLength:
+  Exclude:
+    - lib/ar/enum.rb

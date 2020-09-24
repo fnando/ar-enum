@@ -61,7 +61,8 @@ module AR
       end
 
       def rename_enum_label(name, from, to)
-        sql = "ALTER TYPE #{name} RENAME VALUE #{quote(from.to_s)} TO #{quote(to.to_s)}"
+        sql = "ALTER TYPE #{name} RENAME VALUE #{quote(from.to_s)}" \
+              " TO #{quote(to.to_s)}"
         execute(sql)
       end
 

@@ -7,8 +7,10 @@ Gem::Specification.new do |spec|
   spec.version       = AR::Enum::VERSION
   spec.authors       = ["Nando Vieira"]
   spec.email         = ["fnando.vieira@gmail.com"]
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
-  spec.summary       = "Add support for creating `ENUM` types in PostgreSQL with ActiveRecord"
+  spec.summary       = "Add support for creating `ENUM` types in PostgreSQL " \
+                       "with ActiveRecord"
   spec.description   = spec.summary
   spec.homepage      = "https://rubygems.org/gems/ar-enum"
   spec.license       = "MIT"
@@ -27,5 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pg"
   spec.add_development_dependency "pry-meta"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "rubocop-fnando"
   spec.add_development_dependency "simplecov"
 end
