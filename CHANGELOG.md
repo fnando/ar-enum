@@ -1,5 +1,16 @@
-# ar-check
+# Changelog
 
-#### v0.1.0
+<!--
+Prefix your message with one of the following:
 
-- Initial release
+- [Added] for new features.
+- [Changed] for changes in existing functionality.
+- [Deprecated] for soon-to-be removed features.
+- [Removed] for now removed features.
+- [Fixed] for any bug fixes.
+- [Security] in case of vulnerabilities.
+-->
+
+## v0.1.0 - 2019-03-10
+
+- Initial release.

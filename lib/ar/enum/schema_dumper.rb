@@ -11,9 +11,7 @@ module AR
       def enum_types(stream)
         list = @connection.enum_types.to_a
 
-        if list.any?
-          stream.puts("  # These are enum types available on this database")
-        end
+        stream.puts("  # These are enum types available on this database") if list.any?
 
         list.each do |row|
           labels = row["labels"].split(",")
