@@ -2,7 +2,7 @@
 
 require "active_record"
 
-ActiveRecord::Base.establish_connection "postgres:///test"
+ActiveRecord::Base.establish_connection "postgres:///ar_enum_test"
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.logger = nil
 

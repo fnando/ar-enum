@@ -6,6 +6,4 @@ IFS=$'\n\t'
 set -vx
 
 bundle install
-createdb test
-
-# Do any other automated setup that you need to do here
+createdb ar_enum_test

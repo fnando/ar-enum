@@ -16,7 +16,7 @@ before_install:
   - sudo mv postgresql.conf /etc/postgresql/11/main
   - sudo service postgresql start 11
 before_script:
-  - createdb test
+  - createdb ar_enum_test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - "./cc-test-reporter before-build"
