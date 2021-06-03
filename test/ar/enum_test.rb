@@ -261,11 +261,13 @@ class EnumTest < Minitest::Test
     ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
     contents = stream.tap(&:rewind).read
 
-    assert_includes(
-      contents,
-      %{create_enum :article_status, ["draft", "unlisted", "published"]}
-    )
-    assert_includes contents, %{create_enum :color, ["blue", "green", "yellow"]}
+    enum_section = <<-RUBY
+  # These are enum types available on this database
+  create_enum :article_status, ["draft", "unlisted", "published"]
+  create_enum :color, ["blue", "green", "yellow"]
+    RUBY
+    assert_includes contents, enum_section
+
     assert_includes contents, %[create_table "articles"]
     assert_includes contents, %[t.article_status "status"]
     assert_includes contents, %[t.color "background"]
