@@ -8,7 +8,7 @@ require "ar/enum"
 require "minitest/utils"
 require "minitest/autorun"
 
-ActiveRecord::Base.establish_connection "postgres:///test"
+ActiveRecord::Base.establish_connection "postgres:///ar_enum_test"
 ActiveRecord::Migration.verbose = false
 
 class Article < ActiveRecord::Base

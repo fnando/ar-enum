@@ -56,7 +56,7 @@ jobs:
           PGUSER: postgres
         run: |
           sudo apt-get -yqq install libpq-dev
-          psql -U postgres -c "create database test"
+          psql -U postgres -c "create database ar_enum_test"
 
       - name: Install gem dependencies
         env:
