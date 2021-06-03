@@ -28,10 +28,10 @@ ActiveSupport.on_load(:active_record) do
       def create_table_definition(*args)
         ActiveRecord::Base.connection.enum_types.each do |enum|
           ActiveRecord::ConnectionAdapters::PostgreSQL::ColumnMethods.class_eval do
-            ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[enum["name"].to_sym] = {name: enum["name"]}
+            ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::NATIVE_DATABASE_TYPES[enum.name.to_sym] = {name: enum.name}
 
-            define_method(enum["name"]) do |*names, **options|
-              names.each {|name| column(name, enum["name"].to_sym, options) }
+            define_method(enum.name) do |*names, **options|
+              names.each {|name| column(name, enum.name.to_sym, options) }
             end
           end
         end
