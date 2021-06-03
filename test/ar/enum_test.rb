@@ -12,11 +12,11 @@ class EnumTest < Minitest::Test
 
   def enum_labels(name)
     result = ActiveRecord::Base.connection.enum_types
-    entry = result.find {|row| row["name"] == name.to_s }
+    enum_in_db = result.find {|row| row.name == name.to_s }
 
-    return [] unless entry
+    return [] unless enum_in_db
 
-    entry["labels"].split(",")
+    enum_in_db.labels
   end
 
   test "adds enum" do
@@ -287,11 +287,11 @@ class EnumTest < Minitest::Test
       end
     end
 
-    assert_equal 0, ActiveRecord::Base.connection.enum_types.to_a.size
+    assert_equal 0, ActiveRecord::Base.connection.enum_types.size
 
     migrations.each {|migration| migration.migrate(:up) }
 
-    assert_equal 2, ActiveRecord::Base.connection.enum_types.to_a.size
+    assert_equal 2, ActiveRecord::Base.connection.enum_types.size
 
     stream = StringIO.new
     ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
@@ -299,11 +299,11 @@ class EnumTest < Minitest::Test
 
     migrations.each {|migration| migration.migrate(:down) }
 
-    assert_equal 0, ActiveRecord::Base.connection.enum_types.to_a.size
+    assert_equal 0, ActiveRecord::Base.connection.enum_types.size
 
     eval(contents) # rubocop:disable Security/Eval
 
-    assert_equal 2, ActiveRecord::Base.connection.enum_types.to_a.size
+    assert_equal 2, ActiveRecord::Base.connection.enum_types.size
 
     assert_equal %i[article_status color integer],
                  Article.columns.map(&:type).sort

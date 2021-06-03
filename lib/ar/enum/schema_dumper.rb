@@ -5,22 +5,19 @@ module AR
     module SchemaDumper
       def header(stream)
         super
-        enum_types(stream)
+        enum_section(stream)
       end
 
-      def enum_types(stream)
-        list = @connection.enum_types.to_a
+      def enum_section(stream)
+        list = @connection.enum_types
 
         stream.puts("  # These are enum types available on this database") if list.any?
 
-        list.each do |row|
-          labels = row["labels"].split(",")
-          name = row["name"].to_sym
-
+        list.each do |enum_in_db|
           statement = [
             "  create_enum",
-            "#{name.inspect},",
-            labels.inspect
+            "#{enum_in_db.name.to_sym.inspect},",
+            enum_in_db.labels.inspect
           ].join(" ")
 
           stream.puts(statement)

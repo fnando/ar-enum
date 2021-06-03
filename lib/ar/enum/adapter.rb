@@ -3,30 +3,35 @@
 module AR
   module Enum
     module Adapter
-      def enum_types
-        execute <<~SQL
-          with
-          sorted_enums as (
-            select
-              t.typname,
-              e.enumlabel
-            from
-              pg_type t,
-              pg_enum e
-            where
-              t.oid = e.enumtypid
-            order by
-              e.enumsortorder
-          )
+      class EnumInDb
+        def initialize(name:, labels:)
+          @name = name
+          @labels = labels
+        end
 
+        attr_reader :name, :labels
+      end
+
+      # @return [Array<EnumInDb>]
+      def enum_types
+        typnames = execute <<~SQL
           select
-            typname as name,
-            string_agg(enumlabel, ',') as labels
+            t.typname,
+            e.enumlabel
           from
-            sorted_enums
-          group by
-            typname
+            pg_type t,
+            pg_enum e
+          where
+            t.oid = e.enumtypid
+          order by
+            e.enumsortorder
         SQL
+
+        labels_by_types = typnames.each_with_object({}) do |elem, acc|
+          acc[elem["typname"]] ||= []
+          acc[elem["typname"]].push(elem["enumlabel"])
+        end
+        labels_by_types.map {|name, labels| EnumInDb.new(name: name, labels: labels) }
       end
 
       def create_enum(name, values)
@@ -45,7 +50,7 @@ module AR
       end
 
       def enum_exists?(name)
-        enum_types.any? {|type| type["name"] == name.to_s }
+        enum_types.map(&:name).include?(name.to_s)
       end
 
       def add_enum_label(name, value, options = {})
