@@ -6,6 +6,12 @@ class EnumTest < Minitest::Test
   include TestHelper
 
   setup do
+    begin
+      ActiveRecord::SchemaMigration.delete_all
+    rescue StandardError
+      nil
+    end
+
     recreate_table
     Article.reset_column_information
   end
@@ -266,8 +272,8 @@ class EnumTest < Minitest::Test
   create_enum :article_status, ["draft", "unlisted", "published"]
   create_enum :color, ["blue", "green", "yellow"]
     RUBY
-    assert_includes contents, enum_section
 
+    assert_includes contents, enum_section
     assert_includes contents, %[create_table "articles"]
     assert_includes contents, %[t.article_status "status"]
     assert_includes contents, %[t.color "background"]
@@ -306,7 +312,6 @@ class EnumTest < Minitest::Test
     eval(contents) # rubocop:disable Security/Eval
 
     assert_equal 2, ActiveRecord::Base.connection.enum_types.to_a.size
-
     assert_equal %i[article_status color integer],
                  Article.columns.map(&:type).sort
   end

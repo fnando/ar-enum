@@ -17,7 +17,7 @@ end
 module TestHelper
   def recreate_table
     ActiveRecord::Schema.define(version: 0) do
-      drop_table(:articles) if data_source_exists?(:articles)
+      execute "drop table if exists articles"
       execute "drop type if exists article_status cascade"
       execute "drop type if exists color cascade"
     end

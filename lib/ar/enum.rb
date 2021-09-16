@@ -47,7 +47,7 @@ ActiveSupport.on_load(:active_record) do
     original_fetch_type_metadata = instance_method(:fetch_type_metadata)
 
     define_method(:fetch_type_metadata) do |*args|
-      type_metadata = original_fetch_type_metadata.bind(self).call(*args)
+      type_metadata = original_fetch_type_metadata.bind_call(self, *args)
 
       if type_metadata.type == :enum
         type_metadata = ActiveRecord::ConnectionAdapters::SqlTypeMetadata.new(

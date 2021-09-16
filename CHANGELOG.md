@@ -11,6 +11,11 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## Unreleased
+
+- [Added] Support for Rails 7.0
+- [Removed] Support for Ruby 2.6
+
 ## v0.4.0 - 2021-09-16
 
 - [Changed] Sort enums by name.
