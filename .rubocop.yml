@@ -10,13 +10,7 @@ Naming/FileName:
   Exclude:
     - lib/ar-enum.rb
 
-Metrics/MethodLength:
-  Enabled: false
-
-Metrics/ClassLength:
-  Enabled: false
-
-Metrics/BlockLength:
+Metrics:
   Enabled: false
 
 Layout/LineLength:
