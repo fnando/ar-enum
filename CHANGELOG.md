@@ -11,7 +11,7 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
-## Unreleased
+## v0.5.0
 
 - [Fixed] Add version restriction to ActiveRecord >= 6.0 and < 7.0, as Rails 7
   now supports Postgres enums out of the box.
