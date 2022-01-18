@@ -9,9 +9,8 @@ AllCops:
 Naming/FileName:
   Exclude:
     - lib/ar-enum.rb
-
-Metrics:
-  Enabled: false
+    - vendor/**/*
+    - gemfiles/**/*
 
 Layout/LineLength:
   Enabled: false

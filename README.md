@@ -1,11 +1,11 @@
 # ar-enum
 
 [![Tests](https://github.com/fnando/ar-enum/workflows/Tests/badge.svg)](https://github.com/fnando/ar-enum)
-[![Code Climate](https://codeclimate.com/github/fnando/ar-enum/badges/gpa.svg)](https://codeclimate.com/github/fnando/ar-enum)
 [![Gem](https://img.shields.io/gem/v/ar-enum.svg)](https://rubygems.org/gems/ar-enum)
 [![Gem](https://img.shields.io/gem/dt/ar-enum.svg)](https://rubygems.org/gems/ar-enum)
 
-Add support for creating `ENUM` types in PostgreSQL with ActiveRecord.
+Add support for creating `ENUM` types in PostgreSQL with ActiveRecord. This gem
+is no longer required for Rails 7.0+.
 
 ## Installation
 

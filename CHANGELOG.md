@@ -11,6 +11,11 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## Unreleased
+
+- [Fixed] Add version restriction to ActiveRecord >= 6.0 and < 7.0, as Rails 7
+  now supports Postgres enums out of the box.
+
 ## v0.4.0 - 2021-09-16
 
 - [Changed] Sort enums by name.
